@@ -1,24 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { pokedex } from "./services/pokedex";
 
 function App() {
+  const [pokemon, setPokemon] = useState();
+
+  useEffect(() => {
+    pokedex
+      .get("https://pokeapi.co/api/v2/pokemon")
+      .then((response) => setPokemon(response.data))
+      .catch((err) => {
+        console.error("O seguinte pokemon não existe: " + err);
+      });
+  }, []);
+console.log(pokemon)
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>{pokemon}</div>
     </div>
   );
 }
