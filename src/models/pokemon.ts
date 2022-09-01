@@ -5,6 +5,7 @@ export interface Pokemon {
   id: number;
   sprites?: {
     front_default: string;
+    front_shiny: string;
   };
   types?: PokemonType[];
   weight: number;

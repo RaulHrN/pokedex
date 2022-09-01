@@ -1,8 +1,10 @@
 import { Axios, AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
-import { Pokemon, PokemonTypeColor } from "./models/pokemon";
-import { Response, ResponsePokemon } from "./models/response";
+import { PokemonCard } from "./components/pokemonCard/PokemonCard";
+import { Pokemon} from "./models/pokemon";
+import { ResponsePokemon } from "./models/response";
 import { pokedex } from "./services/pokedex";
+import "./app.css";
 
 function App() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -40,28 +42,13 @@ function App() {
 
   return (
     <div className="App">
-      <div>
-        {pokemons.map((pokemon, index) => {
-          return (
-            <div key={index}>
-              <p>{pokemon.name}</p>
-              <p>{pokemon.id}</p>
-              <img src={pokemon.sprites?.front_default} alt={pokemon.name}/>
-              {pokemon.types&&pokemon.types.map((type) => {
-                return (
-                  <p style={{backgroundColor: PokemonTypeColor[type.type.name]}}>{type.type.name}</p>
-                )
-              })}
-            </div>
-          );
-        })}
-      </div>
+      <div className="pokemons_cards">
+      {pokemons.map((pokemon, index) => {
+        return <PokemonCard pokemon = {pokemon} key={index}/>
+      })}
+    </div>
     </div>
   );
 }
 
 export default App;
-
-/* const {data}: ResponsePokemon = response 
-
-TRANSFORMAR DIV PAI EM NOVO COMPONENT (POKEMON_CARD)*/
