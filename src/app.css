@@ -11,10 +11,12 @@
 
 .App{
     width: 100%;
-    padding: 2rem 5rem;
+    padding: 4rem 5rem;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    flex-direction: column;
+    gap: 2rem;
     background-color: white;
 }
 
@@ -26,5 +28,5 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    gap: 2rem;
 }

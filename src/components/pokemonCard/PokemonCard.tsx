@@ -1,4 +1,4 @@
-import react from "react";
+import React, { useEffect, useState } from "react";
 import "./pokemonCard.css";
 import { Pokemon, PokemonTypeColor } from "../../models/pokemon";
 
@@ -7,26 +7,51 @@ interface CardProps {
 }
 
 export const PokemonCard = ({ pokemon }: CardProps) => {
+  const [sprite, setSprite] = useState(pokemon.sprites?.front_default);
+  useEffect(() => {
+    setSprite(pokemon.sprites?.front_default);
+  }, [pokemon.sprites]);
 
-  console.log(pokemon.sprites)
   return (
     <div className="pokemon_card">
-      <img src={pokemon.sprites?.front_default} alt={pokemon.name} />
-      <p className="pokemon_id">Nº {pokemon.id}</p>
-      <p className="pokemon_name">{pokemon.name}</p>
-      <div className="pokemon_type_card">
-        {pokemon.types &&
-          pokemon.types.map((type) => {
-            return (
-              <p
-                className="pokemon_type"
-                style={{ backgroundColor: PokemonTypeColor[type.type.name] }}
-              >
-                {type.type.name}
-              </p>
-            );
-          })}
-      </div>
+      <img
+        onMouseEnter={() => setSprite(pokemon.sprites?.back_default)}
+        onMouseLeave={() => setSprite(pokemon.sprites?.front_default)}
+        src={sprite}
+        alt={pokemon.name}
+        className="pokemon_sprite"
+      />
+      <section className="pokemon_card_info">
+        <p className="pokemon_id">Nº {pokemon.id}</p>
+        <p className="pokemon_name">{pokemon.name}</p>
+        <div className="pokemon_type_card">
+          {pokemon.types &&
+            pokemon.types.map((type, index) => {
+              return (
+                <p
+                  className="pokemon_type"
+                  style={{ backgroundColor: PokemonTypeColor[type.type.name] }}
+                  key={index}
+                >
+                  {type.type.name}
+                </p>
+              );
+            })}
+        </div>
+      </section>
+      <section className="pokemon_card_stats">
+        <p>Height: {pokemon.height}0cm</p>
+        <p> Weight: {pokemon.weight}kg</p>
+        <p>Base XP: {pokemon.base_experience}</p>
+        <p>HP: </p>
+        <p>Attack: </p>
+        <p>Defense: </p>
+        <p>Special-attack: </p>
+        <p>Special-defense: </p>
+        <p>Speed: </p>
+        <div className="stats">
+        </div>
+      </section>
     </div>
   );
 };

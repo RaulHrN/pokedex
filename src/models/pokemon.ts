@@ -5,20 +5,71 @@ export interface Pokemon {
   id: number;
   sprites?: {
     front_default: string;
+    back_default: string;
     front_shiny: string;
+    back_shiny: string;
+    versions: Versions;
   };
   types?: PokemonType[];
+  base_experience: number;
   weight: number;
+  stats: {
+    "0": Stats;
+    "1": Stats;
+    "2": Stats;
+    "3": Stats;
+    "4": Stats;
+    "5": Stats;
+    "6": Stats;
+  }
 }
 
-interface PokemonType{
-    slot: number;
-    type: {
-        name: PokemonTypes;
+interface Versions {
+  "generation-vii": {
+    "ultra-sun-ultra-moon": {
+      front_default: string;
+      front_shiny: string;
+    };
+
+    icons: {
+      front_default: string;
     }
+  };
 }
 
-type PokemonTypes = "dark" | "dragon" | "electric" | "fairy" | "fighting" | "fire" | "flying" | "ghost" | "grass" | "ground" | "ice" | "bug" | "normal"  | "poison" | "psychic" | "rock" | "steel" |  "water";
+interface Stats {
+    base_stat: number;
+    stat: {
+      name: string;
+  }
+}
+
+interface PokemonType {
+  slot: number;
+  type: {
+    name: PokemonTypes;
+  };
+}
+
+type PokemonTypes =
+  | "dark"
+  | "dragon"
+  | "electric"
+  | "fairy"
+  | "fighting"
+  | "fire"
+  | "flying"
+  | "ghost"
+  | "grass"
+  | "ground"
+  | "ice"
+  | "bug"
+  | "normal"
+  | "poison"
+  | "psychic"
+  | "rock"
+  | "steel"
+  | "water";
 
 export enum PokemonTypeColor {
   dark = "#707070",
@@ -38,5 +89,5 @@ export enum PokemonTypeColor {
   psychic = "#f366b9",
   rock = "#a38c21",
   steel = "#9eb7b8",
-  water = "#4592c4"
+  water = "#4592c4",
 }
