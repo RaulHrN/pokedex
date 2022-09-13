@@ -17,15 +17,25 @@ function App() {
   useEffect(() => {
     getPokemonList();
   }, []);
-  
+
   const getPokemonList = (): void => {
     pokedex
       .get(currUrl)
       .then((response: AxiosResponse<ResponsePokemon, any>) => {
-        setPokemons([...pokemons, ...response.data.results]);
-        response.data.results.forEach((pokemon) => {
-          setCurrUrl(response.data.next);
-          return getPokemonData(pokemon.url, pokemon.name);
+        const pokemonList = [
+          ...pokemons,
+          ...response.data.results.filter(
+            (pokemon) =>
+              !pokemons.find((pokemonFind) => {
+                console.log(pokemon.id === pokemonFind.id);
+                return pokemon.id === pokemonFind.id;
+              })
+          ),
+        ];
+        setPokemons(pokemonList);
+        setCurrUrl(response.data.next);
+        pokemonList.forEach((pokemon) => {
+          if (!pokemon.id) getPokemonData(pokemon.url, pokemon.name);
         });
       })
       .catch((err) => {
@@ -37,7 +47,6 @@ function App() {
     pokedex.get(url).then((response: AxiosResponse<Pokemon, any>) => {
       setPokemons((pokemonList) =>
         pokemonList.map((pokemon) => {
-          console.log(pokemon)
           if (name === pokemon.name) {
             return { ...response.data, ...pokemon };
           }
@@ -49,21 +58,27 @@ function App() {
 
   const getUniquePokemon = (name: string): void => {
     pokedex
-      .get(`https://pokeapi.co/api/v2/pokemon/${name}`)
+      .get(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`)
       .then((response: AxiosResponse<Pokemon, any>) => {
-        setPokemons((pokemonList) =>
-          pokemonList.map((pokemon) => {
-            if (pokemon.name) {
-              return { ...response.data, ...pokemon };
-            }
-            return pokemon;
-          })
-        );
+        if (pokemons.some((pokemon) => response.data.id === pokemon.id)) {
+          setPokemons([...pokemons]);
+        } else {
+          setPokemons([...pokemons, response.data]);
+        }
       });
   };
+
   return (
     <div className="App">
-      <input placeholder="Pokemon Search..." value={pokemonFilter} onChange={(e) => setPokemonFilter(e.target.value)} />
+      <h1 className="pokedex-title">National Dex</h1>
+      <div className="search-bar">
+        <input
+          placeholder="Type here..."
+          value={pokemonFilter}
+          onChange={(e) => setPokemonFilter(e.target.value)}
+        />
+        <button onClick={() => getUniquePokemon(pokemonFilter)}>Search</button>
+      </div>
 
       <InfiniteScroll
         className="pokemons_cards"
@@ -77,16 +92,12 @@ function App() {
             if (
               pokemon.name.toLowerCase().includes(pokemonFilter.toLowerCase())
             ) {
-              console.log(pokemonFilter);
               return pokemon;
             } else if (pokemonFilter === "") {
               return pokemon;
-            } else if (pokemon === null || pokemon === undefined){
-              getUniquePokemon(pokemonFilter);
             }
-            let teste = () => getUniquePokemon(pokemonFilter);
-            return teste;
           })
+          .sort((a, b) => a.id - b.id)
           .map((pokemon, index) => {
             return <PokemonCard pokemon={pokemon} key={index} />;
           })}

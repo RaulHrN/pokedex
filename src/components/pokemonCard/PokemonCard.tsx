@@ -16,7 +16,7 @@ export const PokemonCard = ({ pokemon }: CardProps) => {
     <div className="pokemon_card">
       <img
         onMouseEnter={() => setSprite(pokemon.sprites?.back_default)}
-        onMouseLeave={() => setSprite(pokemon.sprites?.front_default)}
+        onMouseLeave={() => setSprite(pokemon.sprites?.front_shiny)}
         src={sprite}
         alt={pokemon.name}
         className="pokemon_sprite"
@@ -43,14 +43,12 @@ export const PokemonCard = ({ pokemon }: CardProps) => {
         <p>Height: {pokemon.height}0cm</p>
         <p> Weight: {pokemon.weight}kg</p>
         <p>Base XP: {pokemon.base_experience}</p>
-        <p>HP: </p>
-        <p>Attack: </p>
-        <p>Defense: </p>
-        <p>Special-attack: </p>
-        <p>Special-defense: </p>
-        <p>Speed: </p>
-        <div className="stats">
+        <div>
+          {pokemon.stats?.map((stat, index) => {
+            return <p key={index}>{`${stat.stat.name}: ${stat.base_stat}`}</p>;
+          })}
         </div>
+        <div className="stats"></div>
       </section>
     </div>
   );

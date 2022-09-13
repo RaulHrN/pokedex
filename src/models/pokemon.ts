@@ -13,24 +13,11 @@ export interface Pokemon {
   types?: PokemonType[];
   base_experience: number;
   weight: number;
-  stats: {
-    "0": Stats;
-    "1": Stats;
-    "2": Stats;
-    "3": Stats;
-    "4": Stats;
-    "5": Stats;
-    "6": Stats;
-  }
+  stats: Stats[];
 }
 
 interface Versions {
   "generation-vii": {
-    "ultra-sun-ultra-moon": {
-      front_default: string;
-      front_shiny: string;
-    };
-
     icons: {
       front_default: string;
     }

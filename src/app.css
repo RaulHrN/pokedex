@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-*{
+* {
     font-size: 16px;
     padding: 0;
     margin: 0;
@@ -9,7 +9,7 @@
     text-transform: capitalize;
 }
 
-.App{
+.App {
     width: 100%;
     padding: 4rem 5rem;
     display: flex;
@@ -20,7 +20,41 @@
     background-color: white;
 }
 
-.pokemons_cards{
+.pokedex-title{
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 2rem;
+    letter-spacing: 0.5rem;
+    color: rgba(213, 79, 79, 0.7);
+}
+
+.search-bar {
+    display: flex;
+    gap: 1.5rem;
+    height: 2rem;
+}
+
+.search-bar input {
+    height: 100%;
+    padding-left: 1rem;
+    background: rgba(194, 194, 194, 0.3);
+    border-radius: 8px;
+    border: none;
+    font-size: 0.8rem;
+}
+
+.search-bar button {
+    cursor: pointer;
+    height: 100%;
+    padding: 0 1rem;
+    background: #D54F4F;
+    border-radius: 8px;
+    border: none;
+    text-align: center;
+    color: white;
+}
+
+.pokemons_cards {
     width: 80%;
     height: 100%;
     padding: 2rem 1rem;
