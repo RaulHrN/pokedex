@@ -20,15 +20,15 @@ interface Versions {
   "generation-vii": {
     icons: {
       front_default: string;
-    }
+    };
   };
 }
 
 interface Stats {
-    base_stat: number;
-    stat: {
-      name: string;
-  }
+  base_stat: number;
+  stat: {
+    name: string;
+  };
 }
 
 interface PokemonType {
@@ -77,4 +77,25 @@ export enum PokemonTypeColor {
   rock = "#a38c21",
   steel = "#9eb7b8",
   water = "#4592c4",
+}
+
+export enum PokemonTypeBackground {
+  dark = "rgba(112, 112, 112, 0.3)",
+  dragon = "rgba(241, 110, 87, 0.3)",
+  electric = "rgba(238, 213, 53 , 0.3)",
+  fairy = "rgba(253, 185, 233 , 0.3)",
+  fighting = "rgba(213, 103, 35 , 0.3)",
+  fire = "rgba(253, 125, 36 , 0.3)",
+  flying = "rgba(61, 199, 239 , 0.3)",
+  ghost = "rgba(123, 98, 163 , 0.3)",
+  grass = "rgba(155, 204, 80 , 0.3)",
+  ground = "rgba(247, 222, 63 , 0.3)",
+  ice = "rgba(81, 196, 231 , 0.3)",
+  bug = "rgba(114, 159, 63 , 0.3)",
+  normal = "rgba(164, 172, 175 , 0.3)",
+  poison = "rgba(185, 127, 201 , 0.3)",
+  psychic = "rgba(243, 102, 185 , 0.3)",
+  rock = "rgba(163, 140, 33 , 0.3)",
+  steel = "rgba(158, 183, 184 , 0.3)",
+  water = "rgba(69, 146, 196 , 0.3)",
 }

@@ -22,16 +22,7 @@ function App() {
     pokedex
       .get(currUrl)
       .then((response: AxiosResponse<ResponsePokemon, any>) => {
-        const pokemonList = [
-          ...pokemons,
-          ...response.data.results.filter(
-            (pokemon) =>
-              !pokemons.find((pokemonFind) => {
-                console.log(pokemon.id === pokemonFind.id);
-                return pokemon.id === pokemonFind.id;
-              })
-          ),
-        ];
+        const pokemonList = [...pokemons, ...response.data.results];
         setPokemons(pokemonList);
         setCurrUrl(response.data.next);
         pokemonList.forEach((pokemon) => {
@@ -46,7 +37,11 @@ function App() {
   const getPokemonData = (url: string, name: string): void => {
     pokedex.get(url).then((response: AxiosResponse<Pokemon, any>) => {
       setPokemons((pokemonList) =>
-        pokemonList.map((pokemon) => {
+        pokemonList.filter((pokemon, index, pokemonList) => 
+        index === pokemonList.findIndex((t) =>
+          t.id === pokemon.id && t.name === pokemon.name
+        )
+      ).map((pokemon) => {
           if (name === pokemon.name) {
             return { ...response.data, ...pokemon };
           }

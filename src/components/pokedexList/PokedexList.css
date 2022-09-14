@@ -1,0 +1,38 @@
+.pokedex-list{
+    width: 45%;
+    gap: 1.25rem;
+}
+
+.pokedex-title{
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: 0.5rem;
+    color: rgba(213, 79, 79, 0.7);
+}
+
+.search-bar {
+    display: flex;
+    gap: 1.5rem;
+    height: 2rem;
+}
+
+.search-bar input {
+    height: 100%;
+    padding-left: 1rem;
+    background: rgba(194, 194, 194, 0.3);
+    border-radius: 8px;
+    border: none;
+    font-size: 0.8rem;
+}
+
+.search-bar button {
+    cursor: pointer;
+    height: 100%;
+    padding: 0 1rem;
+    background: #D54F4F;
+    border-radius: 8px;
+    border: none;
+    text-align: center;
+    color: white;
+}
