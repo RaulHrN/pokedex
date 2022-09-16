@@ -1,0 +1,24 @@
+.progress_bar_stat{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.progress_bar_stat p{
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    width: 20rem;
+    text-align: center;
+}
+
+.progress_bar{
+    width: 100%;
+}
+
+.progress_bar div{
+    height: 1.8rem;
+    background: #4F7CD5;
+    border-radius: 8px;
+}

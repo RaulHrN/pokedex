@@ -6,6 +6,7 @@ import {
   PokemonTypeColor,
 } from "../../models/pokemon";
 import styled from "styled-components";
+import { ProgressBar } from "../progressBar/ProgressBar";
 
 interface CardProps {
   pokemon: Pokemon;
@@ -37,9 +38,7 @@ export const PokemonCard = ({ pokemon }: CardProps) => {
 
   return (
     <section className="pokemon_card">
-
       <article className="pokemon_card_main">
-
         <div className="pokemon_card_info">
           <p className="pokemon_id">Nº {pokemon.id}</p>
           <p className="pokemon_name">{pokemon.name}</p>
@@ -73,19 +72,19 @@ export const PokemonCard = ({ pokemon }: CardProps) => {
               );
             })}
         </div>
-
       </article>
 
       <article className="pokemon_card_stats">
-        <p>Height: {pokemon.height}0cm</p>
-        <p> Weight: {pokemon.weight}kg</p>
-        <p>Base XP: {pokemon.base_experience}</p>
-        <div>
+        <div className="basic_stats">
+          <p>Height: {pokemon.height}0cm</p>
+          <p> Weight: {pokemon.weight}kg</p>
+          <p>Base XP: {pokemon.base_experience}</p>
+        </div>
+        <div className="stats">
           {pokemon.stats?.map((stat, index) => {
-            return <p key={index}>{`${stat.stat.name}: ${stat.base_stat}`}</p>;
+            return <ProgressBar stats={stat} key={index}></ProgressBar>;
           })}
         </div>
-        <div className="stats"></div>
       </article>
     </section>
   );
