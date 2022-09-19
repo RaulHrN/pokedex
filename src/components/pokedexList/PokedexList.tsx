@@ -1,5 +1,6 @@
 import { AxiosResponse } from "axios";
 import React, { useState, useEffect } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { Pokemon } from "../../models/pokemon";
 import { ResponsePokemon } from "../../models/response";
 import { pokedex } from "../../services/pokedex";
@@ -15,12 +16,16 @@ export const PokedexList = (props: PokemonsProps) => {
   const [currUrl, setCurrUrl] = useState<string>(
     "https://pokeapi.co/api/v2/pokemon"
   );
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     getPokemonList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getPokemonList = (): void => {
+    setLoader(() => true);
     pokedex
       .get(currUrl)
       .then((response: AxiosResponse<ResponsePokemon, any>) => {
@@ -32,32 +37,43 @@ export const PokedexList = (props: PokemonsProps) => {
         });
       })
       .catch((err) => {
-        console.error("O pokemon não existe: " + err);
-      });
+        setErrorMessage("Lista não encontrada");
+        console.error(err);
+      })
+      .finally(() => setLoader(() => false));
   };
 
   const getPokemonData = (url: string, name: string): void => {
-    pokedex.get(url).then((response: AxiosResponse<Pokemon, any>) => {
-      setPokemons((pokemonList) =>
-        pokemonList
-          .filter(
-            (pokemon, index, pokemonList) =>
-              index ===
-              pokemonList.findIndex(
-                (t) => t.id === pokemon.id && t.name === pokemon.name
-              )
-          )
-          .map((pokemon) => {
-            if (name === pokemon.name) {
-              return { ...response.data, ...pokemon };
-            }
-            return pokemon;
-          })
-      );
-    });
+    setLoader(() => true);
+    pokedex
+      .get(url)
+      .then((response: AxiosResponse<Pokemon, any>) => {
+        setPokemons((pokemonList) =>
+          pokemonList
+            .filter(
+              (pokemon, index, pokemonList) =>
+                index ===
+                pokemonList.findIndex(
+                  (t) => t.id === pokemon.id && t.name === pokemon.name
+                )
+            )
+            .map((pokemon) => {
+              if (name === pokemon.name) {
+                return { ...response.data, ...pokemon };
+              }
+              return pokemon;
+            })
+        );
+      })
+      .catch((err) => {
+        setErrorMessage("O pokemon não existe / não foi encontrado");
+        console.error(err);
+      })
+      .finally(() => setLoader(() => false));
   };
 
   const getUniquePokemon = (name: string): void => {
+    setLoader(() => true);
     pokedex
       .get(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`)
       .then((response: AxiosResponse<Pokemon, any>) => {
@@ -66,8 +82,24 @@ export const PokedexList = (props: PokemonsProps) => {
         } else {
           setPokemons([...pokemons, response.data]);
         }
-      });
+      })
+      .catch((err) => {
+        setErrorMessage("O pokemon não existe / não foi encontrado");
+        console.error(err);
+      })
+      .finally(() => setLoader(() => false));
   };
+
+  const pokedexNumberConvert = (num: number): string | number => {
+    if (num < 10) {
+      return "00" + num;
+    } else if (num >= 10 && num < 100) {
+      return "0" + num;
+    } else {
+      return num;
+    }
+  };
+
   return (
     <aside className="container pokedex-list">
       <h1 className="pokedex-title">National dex</h1>
@@ -79,27 +111,48 @@ export const PokedexList = (props: PokemonsProps) => {
         />
         <button onClick={() => getUniquePokemon(pokemonFilter)}>Search</button>
       </div>
-      <section className="pokemons-list">
-        {pokemons
-          .filter((pokemon) => {
-            if (
-              pokemon.name.toLowerCase().includes(pokemonFilter.toLowerCase())
-            ) {
-              return pokemon;
-            } else if (pokemonFilter === "") {
-              return pokemon;
-            }
-          })
-          .sort((a, b) => a.id - b.id)
-          .map((pokemon, index) => {
-            return (
-              <div key={index} onClick={() => props.selectedPokemon(pokemon)}>
-                <span>{pokemon.id}</span>
-                <span>{pokemon.name}</span>
-              </div>
-            );
-          })}
-      </section>
+      <div id="scrollableDiv">
+        <InfiniteScroll
+          className="pokemons-list"
+          next={() => getPokemonList()}
+          hasMore={currUrl !== ""}
+          dataLength={pokemons.length}
+          loader={loader ? "Loading..." : errorMessage}
+          scrollableTarget="scrollableDiv"
+        >
+          {pokemons
+            // eslint-disable-next-line array-callback-return
+            .filter((pokemon) => {
+              if (
+                pokemon.name.toLowerCase().includes(pokemonFilter.toLowerCase())
+              ) {
+                return pokemon;
+              } else if (pokemonFilter === "") {
+                return pokemon;
+              }
+            })
+            .sort((a, b) => a.id - b.id)
+            .map((pokemon, index) => {
+              return (
+                <div
+                  key={index}
+                  className="pokemon-list_card"
+                  onClick={() => props.selectedPokemon(pokemon)}
+                >
+                  <img
+                    src={
+                      pokemon.sprites?.versions["generation-vii"].icons
+                        .front_default
+                    }
+                    alt={pokemon.name}
+                  />
+                  <p>{pokedexNumberConvert(pokemon.id)}</p>
+                  <span>{pokemon.name}</span>
+                </div>
+              );
+            })}
+        </InfiniteScroll>
+      </div>
     </aside>
   );
 };
