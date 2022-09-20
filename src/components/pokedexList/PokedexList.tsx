@@ -88,6 +88,8 @@ export const PokedexList = (props: PokemonsProps) => {
         console.error(err);
       })
       .finally(() => setLoader(() => false));
+
+      setLoader(() => true)
   };
 
   const pokedexNumberConvert = (num: number): string | number => {
@@ -117,7 +119,7 @@ export const PokedexList = (props: PokemonsProps) => {
           next={() => getPokemonList()}
           hasMore={currUrl !== ""}
           dataLength={pokemons.length}
-          loader={loader ? "Loading..." : errorMessage}
+          loader={<p className="loader">{loader ? "Loading..." : errorMessage}</p>}
           scrollableTarget="scrollableDiv"
         >
           {pokemons

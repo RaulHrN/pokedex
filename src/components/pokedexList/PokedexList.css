@@ -83,6 +83,14 @@
     font-weight: 600;
 }
 
+.loader{
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+    letter-spacing: 0.1rem;
+    color: #737373;
+}
+
 ::-webkit-scrollbar {
     width: 0.2rem;
 }
