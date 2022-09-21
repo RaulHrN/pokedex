@@ -37,8 +37,7 @@ export const PokedexList = (props: PokemonsProps) => {
         });
       })
       .catch((err) => {
-        setErrorMessage("Lista não encontrada");
-        console.error(err);
+        getErrorMessage(err);
       })
       .finally(() => setLoader(() => false));
   };
@@ -66,14 +65,15 @@ export const PokedexList = (props: PokemonsProps) => {
         );
       })
       .catch((err) => {
-        setErrorMessage("O pokemon não existe / não foi encontrado");
-        console.error(err);
+        getErrorMessage(err);
       })
       .finally(() => setLoader(() => false));
+
   };
 
   const getUniquePokemon = (name: string): void => {
     setLoader(() => true);
+    setErrorMessage(() => "");
     pokedex
       .get(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`)
       .then((response: AxiosResponse<Pokemon, any>) => {
@@ -84,12 +84,14 @@ export const PokedexList = (props: PokemonsProps) => {
         }
       })
       .catch((err) => {
-        setErrorMessage("O pokemon não existe / não foi encontrado");
-        console.error(err);
+        getErrorMessage(err);
       })
       .finally(() => setLoader(() => false));
 
-      setLoader(() => true)
+  };
+
+  const getErrorMessage = (err: any) => {
+    setErrorMessage("Error " + err.response.status + ": " + err.response.data);
   };
 
   const pokedexNumberConvert = (num: number): string | number => {
@@ -119,7 +121,9 @@ export const PokedexList = (props: PokemonsProps) => {
           next={() => getPokemonList()}
           hasMore={currUrl !== ""}
           dataLength={pokemons.length}
-          loader={<p className="loader">{loader ? "Loading..." : errorMessage}</p>}
+          loader={
+            <p className="loader">{loader ? "Loading..." : errorMessage}</p>
+          }
           scrollableTarget="scrollableDiv"
         >
           {pokemons
@@ -136,7 +140,7 @@ export const PokedexList = (props: PokemonsProps) => {
             .sort((a, b) => a.id - b.id)
             .map((pokemon, index) => {
               return (
-                <div
+                <button
                   key={index}
                   className="pokemon-list_card"
                   onClick={() => props.selectedPokemon(pokemon)}
@@ -150,7 +154,7 @@ export const PokedexList = (props: PokemonsProps) => {
                   />
                   <p>{pokedexNumberConvert(pokemon.id)}</p>
                   <span>{pokemon.name}</span>
-                </div>
+                </button>
               );
             })}
         </InfiniteScroll>

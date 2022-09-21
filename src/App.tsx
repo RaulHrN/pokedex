@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PokemonCard } from "./components/pokemonCard/PokemonCard";
+import { PokemonInfo } from "./components/pokemonInfo/PokemonInfo";
 import { Pokemon } from "./models/pokemon";
 import "./app.css";
 import { PokedexList } from "./components/pokedexList/PokedexList";
@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
       {!pokemon && <Initial/>}
-      {!!pokemon && <PokemonCard pokemon={pokemon} />}
+      {!!pokemon && <PokemonInfo pokemon={pokemon} />}
 
       <PokedexList selectedPokemon={(pokemon) => setPokemon(pokemon)} />
     </div>

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./pokemonCard.css";
+import "./PokemonInfo.css";
 import {
   Pokemon,
   PokemonTypeBackground,
   PokemonTypeColor,
 } from "../../models/pokemon";
 import styled from "styled-components";
-import { ProgressBar } from "../progressBar/ProgressBar";
+import { PokemonStats } from "../pokemonStats/PokemonStats";
 
 interface CardProps {
   pokemon: Pokemon;
@@ -27,7 +27,7 @@ const TypeStyled = styled.p<PokemonTypes>`
   border-radius: 8px;
 `;
 
-export const PokemonCard = ({ pokemon }: CardProps) => {
+export const PokemonInfo = ({ pokemon }: CardProps) => {
   const [sprite, setSprite] = useState(pokemon.sprites?.front_default);
   const [spriteShiny, setSpriteShiny] = useState(pokemon.sprites?.front_shiny);
 
@@ -37,9 +37,9 @@ export const PokemonCard = ({ pokemon }: CardProps) => {
   }, [pokemon.sprites]);
 
   return (
-    <section className="pokemon_card">
-      <article className="pokemon_card_main">
-        <div className="pokemon_card_info">
+    <section className="pokemon_info">
+      <article className="pokemon_info-main">
+        <div className="pokemon_info-name">
           <p className="pokemon_id">Nº {pokemon.id}</p>
           <p className="pokemon_name">{pokemon.name}</p>
         </div>
@@ -59,9 +59,9 @@ export const PokemonCard = ({ pokemon }: CardProps) => {
           />
         </div>
 
-        <div className="pokemon_type_card">
+        <div className="pokemon_types">
           {pokemon.types &&
-            pokemon.types.map((type, index) => {
+            pokemon.types.map((type) => {
               return (
                 <TypeStyled
                   types={PokemonTypeColor[type.type.name]}
@@ -74,15 +74,15 @@ export const PokemonCard = ({ pokemon }: CardProps) => {
         </div>
       </article>
 
-      <article className="pokemon_card_stats">
-        <div className="basic_stats">
+      <article className="pokemon_stats">
+        <div className="stats">
           <p>Height: {pokemon.height}0cm</p>
           <p> Weight: {pokemon.weight}kg</p>
           <p>Base XP: {pokemon.base_experience}</p>
         </div>
-        <div className="stats">
+        <div className="basic_stats">
           {pokemon.stats?.map((stat, index) => {
-            return <ProgressBar stats={stat} key={index}></ProgressBar>;
+            return <PokemonStats stats={stat} key={index}></PokemonStats>;
           })}
         </div>
       </article>
